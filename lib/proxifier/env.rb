@@ -4,9 +4,9 @@ require "proxifier"
 module Proxifier
   class Proxy
     def open(host, port, local_host = nil, local_port = nil)
-      return TCPSocket.new(host, port, local_host, local_port, :proxy => nil) unless proxify?(host)
+      return Socket.tcp(host, port, local_host, local_port, :proxy => nil) unless proxify?(host)
 
-      socket = TCPSocket.new(self.host, self.port, local_host, local_port, :proxy => nil)
+      socket = Socket.tcp(self.host, self.port, local_host, local_port, :proxy => nil)
 
       begin
         proxify(socket, host, port)
@@ -107,7 +107,7 @@ module Proxifier
   end
 end
 
-class TCPSocket
+class Socket
   include Proxifier::Proxify
   include Proxifier::EnvironmentProxify
 end
